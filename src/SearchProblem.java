@@ -6,7 +6,7 @@ public abstract class SearchProblem {
 	private String[] operators;
 	abstract boolean goal_test(Object state);
 	abstract int path_cost(SearchTreeNode node);
-	abstract ArrayList<SearchTreeNode> expand(SearchTreeNode node, String[] operators);
+	abstract ArrayList<SearchTreeNode> expand(SearchTreeNode node);
 	
 	public Object getInitial_state() {
 		return initial_state;

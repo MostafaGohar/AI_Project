@@ -160,6 +160,25 @@ public class Maze {
 		this.ending_Y = ending_Y;
 	}
 	
+	public boolean canMoveForward(int x, int y, int direction){
+		int new_direction = 0;
+		switch(direction){
+		case 0: new_direction = 1;break;
+		case 1: new_direction = 4;break;
+		case 2: new_direction = 2;break;
+		case 3: new_direction = 8;break;
+		}
+		if((maze[x][y] & new_direction) == 1){
+			return true;
+		}
+		return false;
+	}
+	public boolean hasPokemon(int x, int y){
+		if((maze[x][y] & 16) == 1){
+			return true;
+		}
+		return false;
+	}
 	public static void main(String[] args) {
 		int x = (int)(Math.random()*25);
 		if(x<5)x=5;

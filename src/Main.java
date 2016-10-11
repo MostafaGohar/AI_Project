@@ -35,11 +35,11 @@ public class Main {
 				return node;
 			switch(QingFunc){
 			case "BF": 
-				nodes.addAll(searchProblem.expand(node, searchProblem.getOperators())) 
+				nodes.addAll(searchProblem.expand(node)) 
 				
 				;break;
 			case "DF": 
-				expanded_nodes = searchProblem.expand(node, searchProblem.getOperators());
+				expanded_nodes = searchProblem.expand(node);
 				for(int i = expanded_nodes.size()-1;i>=0;i--){
 					nodes.addFirst(expanded_nodes.get(i));
 				}
@@ -47,14 +47,14 @@ public class Main {
 			case "ID":
 				if(!(node.getDepth() >= iterative_depth_count)){
 					
-					expanded_nodes = searchProblem.expand(node, searchProblem.getOperators());
+					expanded_nodes = searchProblem.expand(node);
 					for(int i = expanded_nodes.size()-1;i>=0;i--){
 						nodes.addFirst(expanded_nodes.get(i));
 					}
 				}
 				;break;
 			case "UC": 
-				nodes.addAll(searchProblem.expand(node, searchProblem.getOperators()));
+				nodes.addAll(searchProblem.expand(node));
 
 				SearchTreeNode[] nodes_array1 = (SearchTreeNode[]) nodes.toArray();
 				ArrayList<SearchTreeNode> nodes_array = new ArrayList<SearchTreeNode>(Arrays.asList(nodes_array1));

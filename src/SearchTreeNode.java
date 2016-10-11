@@ -61,6 +61,10 @@ public class SearchTreeNode {
 		this.path_cost_from_root = path_cost_from_root;
 	}
 	
+	public SearchTreeNode cloneNode(){
+		SearchTreeNode new_node = new SearchTreeNode(parent, depth, path_cost_from_root, operator, state);
+		return new_node;
+	}
 //	public int getHeuristic_cost() {
 //		return heuristic_cost;
 //	}
