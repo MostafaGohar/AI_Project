@@ -1,0 +1,4 @@
+1. calculate distance to end point without walls;
+2. calculate distance to nearest pokemon without walls;
+3. http://stackoverflow.com/questions/9994913/pacman-what-kinds-of-heuristics-are-mainly-used
+4. closest pokemon+pokemon_to_end_point combination OR closest pokemon + distance to end point from pokemon OR distance to closest pokemon from endpoint?
