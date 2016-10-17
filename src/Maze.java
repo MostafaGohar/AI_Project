@@ -1,4 +1,5 @@
 import java.util.Collections;
+import java.util.ArrayList;
 import java.util.Arrays;
  
 public class Maze {
@@ -14,14 +15,41 @@ public class Maze {
 	int starting_Y;
 	int ending_X;
 	int ending_Y;
+	ArrayList<Pokemon> Pokemons = new ArrayList<Pokemon>();
+	int egg_hatch;
  
-	public Maze(int x, int y, int starting_X, int starting_Y, int ending_X, int ending_Y) {
+	public int getEgg_hatch() {
+		return egg_hatch;
+	}
+
+	public void setEgg_hatch(int egg_hatch) {
+		this.egg_hatch = egg_hatch;
+	}
+
+	public Maze() {
+//		int x = (int)(Math.random()*25);
+//		if(x<5)x=5;
+//		int y = (int)(Math.random()*25);
+//		if(y<5)y=5;
+		int x = 4;
+		int y = 4;
+		int starting_X_temp =(int)(Math.random()*x);
+		int starting_Y_temp =(int)(Math.random()*y);
+		int ending_X_temp = 0;
+		int ending_Y_temp = 0;
+		while(true){
+			ending_X_temp =(int)(Math.random()*x);
+			ending_Y_temp =(int)(Math.random()*y);
+			if(!(starting_X_temp == ending_X_temp && starting_Y_temp == ending_Y_temp))
+				break;
+		}
 		this.x = x;
 		this.y = y;
-		this.starting_X = starting_X;
-		this.starting_Y = starting_Y;
-		this.ending_X = ending_X;
-		this.ending_Y = ending_Y;
+		this.starting_X = starting_X_temp;
+		this.starting_Y = starting_Y_temp;
+		this.ending_X = ending_X_temp;
+		this.ending_Y = ending_Y_temp;
+		this.egg_hatch = (int) (Math.random()*25) + 5;
 		maze = new int[this.x][this.y];
 		generateMaze(0, 0);
 		generatePokemon();
@@ -34,6 +62,7 @@ public class Maze {
 					!(i == starting_Y && j == starting_X) && 
 					!(i == ending_Y && j == ending_X))
 				{
+					Pokemons.add(new Pokemon(j,i));
 					maze[j][i] |= 16;
 				}
 			}
@@ -168,34 +197,22 @@ public class Maze {
 		case 2: new_direction = 2;break;
 		case 3: new_direction = 8;break;
 		}
-		if((maze[x][y] & new_direction) == 1){
+		if(!((maze[x][y] & new_direction) == 0)){
 			return true;
 		}
 		return false;
 	}
 	public boolean hasPokemon(int x, int y){
-		if((maze[x][y] & 16) == 1){
+		if(!((maze[x][y] & 16) == 0)){
 			return true;
 		}
 		return false;
 	}
+	public ArrayList<Pokemon> getPokemons(){
+		return Pokemons;
+	}
 	public static void main(String[] args) {
-		int x = (int)(Math.random()*25);
-		if(x<5)x=5;
-		int y = (int)(Math.random()*25);
-		if(y<5)y=5;
-		
-		int starting_X_temp =(int)(Math.random()*x);
-		int starting_Y_temp =(int)(Math.random()*y);
-		int ending_X_temp = 0;
-		int ending_Y_temp = 0;
-		while(true){
-			ending_X_temp =(int)(Math.random()*x);
-			ending_Y_temp =(int)(Math.random()*y);
-			if(!(starting_X_temp == ending_X_temp && starting_Y_temp == ending_Y_temp))
-				break;
-		}
-		Maze maze = new Maze(x, y, starting_X_temp, starting_Y_temp, ending_X_temp, ending_Y_temp);
+		Maze maze = new Maze();
 		maze.display();
 		maze.print();
 	}

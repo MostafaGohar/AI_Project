@@ -56,7 +56,7 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 			case "L": 
 				new_state = new PokemonState(((PokemonState)node.getState()).getX(),
 						((PokemonState)node.getState()).getY(),
-						(((PokemonState)node.getState()).getDirection()-1) % 4,
+						(((((PokemonState)node.getState()).getDirection()-1) % 4)+4) % 4,
 						((PokemonState)node.getState()).getPokemons(),
 						((PokemonState)node.getState()).getEgg_hatch());
 				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "L", new_state);
@@ -90,6 +90,9 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 					new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "F", new_state);
 					result.add(new_node.cloneNode());
 				}
+//				else{
+//					System.out.println("Can't move");
+//				}
 						;break;
 			}
 		}

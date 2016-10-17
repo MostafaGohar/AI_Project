@@ -6,7 +6,7 @@ import java.util.Queue;
 public class Main {
 
 
-	public Object SearchAlgorithm(SearchProblem searchProblem, String QingFunc){
+	public static Object SearchAlgorithm(SearchProblem searchProblem, String QingFunc){
 		ArrayDeque<SearchTreeNode> nodes = new ArrayDeque<SearchTreeNode>();
 		SearchTreeNode root = new SearchTreeNode(null,0,0,null,searchProblem.getInitial_state());
 		SearchTreeNode node;
@@ -14,7 +14,7 @@ public class Main {
 		
 		int iterative_depth_count = 0;
 		ArrayList<SearchTreeNode>expanded_nodes = null;
-		
+		ArrayList<SearchTreeNode> stns = new ArrayList<SearchTreeNode>();
 		while(true){
 			
 			if(nodes.isEmpty() && QingFunc != "ID"){
@@ -29,20 +29,46 @@ public class Main {
 
 				}
 			}
-			
+
 			node = nodes.removeFirst();
+			if(!stns.isEmpty()){
+				stns.remove(0);
+			}
 			if(searchProblem.goal_test(node.getState()))
 				return node;
 			switch(QingFunc){
 			case "BF": 
-				nodes.addAll(searchProblem.expand(node)) 
+				stns.addAll(searchProblem.expand(node));
+				System.out.println("AASAs");
+				System.out.println("node " +((PokemonState)node.getState()).getDirection());
+				
+				for(int g = 0;g<stns.size();g++){
+					System.out.println("nodes " +((PokemonState)stns.get(g).getState()).getX() +" " +((PokemonState)stns.get(g).getState()).getY()
+							+" dir "+"nodes dir " +((PokemonState)stns.get(g).getState()).getDirection());
+
+				}
+				nodes.addAll(searchProblem.expand(node));
+				
+//				System.out.println("AASAs");
+//				System.out.println("node " +((PokemonState)node.getState()).getDirection());
+//				
+//				for(int g = 0;g<stns.size();g++){
+//					System.out.println("nodes " +((PokemonState)stns.get(g).getState()).getX() +" " +((PokemonState)stns.get(g).getState()).getY()
+//							+" dir "+"nodes dir " +((PokemonState)stns.get(g).getState()).getDirection());
+//
+//				}
+					
+				
+				
 				
 				;break;
 			case "DF": 
+
 				expanded_nodes = searchProblem.expand(node);
 				for(int i = expanded_nodes.size()-1;i>=0;i--){
 					nodes.addFirst(expanded_nodes.get(i));
 				}
+
 				;break;
 			case "ID":
 				if(!(node.getDepth() >= iterative_depth_count)){
@@ -85,8 +111,15 @@ public class Main {
 			}
 		}
 		
-		
-		
+	}
+	public static void main(String[]args){
+		Maze maze = new Maze();
+		maze.display();
+		String [] ops = {"R", "F", "L"};
+		GottaCatchemAllSearchProblem gcasp = new GottaCatchemAllSearchProblem(maze,
+				new PokemonState(maze.getStarting_X(),maze.getStarting_Y(),0,maze.getPokemons(),maze.getEgg_hatch()),
+				ops);
+		System.out.println(((SearchTreeNode)SearchAlgorithm(gcasp, "BF")).getPath_cost_from_root());
 		
 		
 	}
