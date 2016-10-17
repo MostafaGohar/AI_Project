@@ -3,11 +3,16 @@ import java.util.ArrayList;
 public class GottaCatchemAllSearchProblem extends SearchProblem{
 	
 	private Maze maze;
+	public ArrayList<Integer> xs = new ArrayList<Integer>();
 	
+	public ArrayList<Integer> ys = new ArrayList<Integer>();
+
 	public GottaCatchemAllSearchProblem(Maze maze, PokemonState initial_state,String[] operators){
 		this.maze = maze;
 		this.setInitial_state(initial_state);
 		this.setOperators(operators);
+		this.xs.add(maze.getStarting_X());
+		this.ys.add(maze.getStarting_Y());
 	}
 	
 	
@@ -24,7 +29,8 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 	boolean goal_test(Object state) {
 		if((((PokemonState)state).getX() == maze.getEnding_X() && ((PokemonState)state).getY() == maze.getEnding_Y())
 				&& ((PokemonState)state).getEgg_hatch() <= 0 
-				&& ((PokemonState)state).getPokemons().isEmpty()){
+				&& ((PokemonState)state).getPokemons().isEmpty()
+				){
 			return true;
 		}
 		return false;
@@ -39,9 +45,27 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 	@Override
 	ArrayList<SearchTreeNode> expand(SearchTreeNode node) {
 		
+		//print cells discovered so far
+//		int checkz = 0;
+//		for(int p = 0;p<xs.size();p++){
+//			if(xs.get(p) == ((PokemonState)node.getState()).getX() && ys.get(p) == ((PokemonState)node.getState()).getY()){
+//				checkz = 1;
+//			}
+//		}
+//		if(checkz == 0){
+//			xs.add(((PokemonState)node.getState()).getX());
+//			ys.add(((PokemonState)node.getState()).getY());
+//			System.out.println("So far: ");
+//			for(int p = 0;p<xs.size();p++){
+//				System.out.print(xs.get(p)+", "+ys.get(p)+" | ");
+//			}
+//		}
+		
 		ArrayList<SearchTreeNode>result = new ArrayList<SearchTreeNode>();
 		SearchTreeNode new_node = null;
 		PokemonState new_state = null;
+		
+		
 		for(int i = 0;i<getOperators().length;i++){
 			switch(getOperators()[i]){
 			case "R": 
@@ -74,15 +98,15 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 						case 2: new_y++;break;
 						case 3: new_x--;break;
 					}
-					ArrayList<Pokemon>pokemons = (((PokemonState) node.getState()).getPokemons());
+					ArrayList<Pokemon>pokemons = (ArrayList<Pokemon>)(((PokemonState) node.getState()).getPokemons()).clone();
 					if(maze.hasPokemon(new_x, new_y)){
 						for(int k = 0;k<pokemons.size();k++){
 							if(pokemons.get(k).isEqual(new Pokemon(new_x,new_y))){
 								pokemons.remove(k);
-								break;
 							}
 						}
 					}
+					
 					new_state = new PokemonState(new_x, new_y,
 							(((PokemonState)node.getState()).getDirection()),
 							pokemons,

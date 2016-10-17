@@ -49,7 +49,7 @@ public class Maze {
 		this.starting_Y = starting_Y_temp;
 		this.ending_X = ending_X_temp;
 		this.ending_Y = ending_Y_temp;
-		this.egg_hatch = (int) (Math.random()*25) + 5;
+		this.egg_hatch = (int) (Math.random()*6) + 2;
 		maze = new int[this.x][this.y];
 		generateMaze(0, 0);
 		generatePokemon();

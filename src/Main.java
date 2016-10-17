@@ -38,15 +38,15 @@ public class Main {
 				return node;
 			switch(QingFunc){
 			case "BF": 
-				stns.addAll(searchProblem.expand(node));
-				System.out.println("AASAs");
-				System.out.println("node " +((PokemonState)node.getState()).getDirection());
-				
-				for(int g = 0;g<stns.size();g++){
-					System.out.println("nodes " +((PokemonState)stns.get(g).getState()).getX() +" " +((PokemonState)stns.get(g).getState()).getY()
-							+" dir "+"nodes dir " +((PokemonState)stns.get(g).getState()).getDirection());
-
-				}
+//				stns.addAll(searchProblem.expand(node));
+//				System.out.println("AASAs");
+//				System.out.println("node " +((PokemonState)node.getState()).getDirection());
+//				
+//				for(int g = 0;g<stns.size();g++){
+//					System.out.println("nodes " +((PokemonState)stns.get(g).getState()).getX() +" " +((PokemonState)stns.get(g).getState()).getY()
+//							+" dir "+"nodes dir " +((PokemonState)stns.get(g).getState()).getDirection());
+//
+//				}
 				nodes.addAll(searchProblem.expand(node));
 				
 //				System.out.println("AASAs");
@@ -116,10 +116,20 @@ public class Main {
 		Maze maze = new Maze();
 		maze.display();
 		String [] ops = {"R", "F", "L"};
+		if(maze.getPokemons().isEmpty())
+			System.out.println("No Pokemon");
 		GottaCatchemAllSearchProblem gcasp = new GottaCatchemAllSearchProblem(maze,
 				new PokemonState(maze.getStarting_X(),maze.getStarting_Y(),0,maze.getPokemons(),maze.getEgg_hatch()),
 				ops);
-		System.out.println(((SearchTreeNode)SearchAlgorithm(gcasp, "BF")).getPath_cost_from_root());
+		System.out.println(maze.getEgg_hatch());
+
+		SearchTreeNode resultNode = ((SearchTreeNode)SearchAlgorithm(gcasp, "BF"));
+		SearchTreeNode node = resultNode;
+		System.out.println(((PokemonState)node.getState()).getX()+ " | "+((PokemonState)node.getState()).getY()+" D "+((PokemonState)node.getState()).getDirection());
+		while(node.getParent() != null){
+			node = node.getParent();
+			System.out.println(((PokemonState)node.getState()).getX()+ " | "+((PokemonState)node.getState()).getY()+" D "+((PokemonState)node.getState()).getDirection());
+		}
 		
 		
 	}
