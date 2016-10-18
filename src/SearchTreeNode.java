@@ -3,17 +3,20 @@ public class SearchTreeNode {
 
 	private SearchTreeNode parent;
 	private int depth;
-//	int heuristic_cost;
 	private int path_cost_from_root;
 	private String operator;
 	private Object state;
+	private int heuristic_cost;
 	
+	
+
 	public SearchTreeNode(SearchTreeNode parent, int depth, int path_cost_from_root, String operator, Object state){
 		this.parent = parent;
 		this.depth = depth;
 		this.path_cost_from_root = path_cost_from_root;
 		this.operator = operator;
 		this.state = state;
+		this.heuristic_cost = 0;
 	}
 	
 
@@ -65,11 +68,12 @@ public class SearchTreeNode {
 		SearchTreeNode new_node = new SearchTreeNode(parent, depth, path_cost_from_root, operator, state);
 		return new_node;
 	}
-//	public int getHeuristic_cost() {
-//		return heuristic_cost;
-//	}
-//
-//	public void setHeuristic_cost(int heuristic_cost) {
-//		this.heuristic_cost = heuristic_cost;
-//	}
+	public int getHeuristic_cost() {
+		return heuristic_cost;
+	}
+
+	public void setHeuristic_cost(int heuristic_cost) {
+		this.heuristic_cost = heuristic_cost;
+	}
+
 }

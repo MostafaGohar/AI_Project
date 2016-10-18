@@ -11,7 +11,7 @@ public class Main {
 		SearchTreeNode root = new SearchTreeNode(null,0,0,null,searchProblem.getInitial_state());
 		SearchTreeNode node;
 		nodes.add(root);
-		
+		int heuristic = 0;
 		int iterative_depth_count = 0;
 		ArrayList<SearchTreeNode>expanded_nodes = null;
 		ArrayList<SearchTreeNode> stns = new ArrayList<SearchTreeNode>();
@@ -36,7 +36,7 @@ public class Main {
 			}
 			if(searchProblem.goal_test(node.getState()))
 				return node;
-			switch(QingFunc){
+			switch(QingFunc.substring(0,2)){
 			case "BF": 
 //				stns.addAll(searchProblem.expand(node));
 //				System.out.println("AASAs");
@@ -81,36 +81,83 @@ public class Main {
 				;break;
 			case "UC": 
 				nodes.addAll(searchProblem.expand(node));
-
-				SearchTreeNode[] nodes_array1 = (SearchTreeNode[]) nodes.toArray();
-				ArrayList<SearchTreeNode> nodes_array = new ArrayList<SearchTreeNode>(Arrays.asList(nodes_array1));
-				ArrayList<SearchTreeNode> result = new ArrayList<SearchTreeNode>();
-				for(int i = 0;i<nodes.size();i++){
-					SearchTreeNode sorted_node = nodes_array.get(0);
-					int index = 0;
-					
-					for(int j = 1;j<nodes.size();j++){
-						if(sorted_node.getPath_cost_from_root() > nodes_array.get(j).getPath_cost_from_root()){
-							sorted_node = nodes_array.get(j);
-							index = j;
-						}
-					}
-					result.add(sorted_node);
-					nodes_array.remove(index);
-				}
+				nodes = sortDeque(nodes);
 				
-				nodes = new ArrayDeque<SearchTreeNode>();
-				for(int i = 0;i<result.size();i++){
-					nodes.add(result.get(i));
-				}
 				
 				
 				;break;
-			case "GR": ;break;
-			case "AS": ;break;
+			case "GR": 
+			case "AS":
+				heuristic = Integer.parseInt(QingFunc.substring(2));
+				ArrayList<SearchTreeNode> nodes_expanded = searchProblem.expand(node);
+				switch(heuristic){
+				
+				case 1: 
+					for(int ne = 0;ne<nodes_expanded.size();ne++){
+						nodes_expanded.get(ne)
+						.setHeuristic_cost(firstHeuristic(nodes_expanded.get(ne)
+								,((GottaCatchemAllSearchProblem)searchProblem).getMaze()));
+					}
+					;break;
+				case 2:
+					for(int ne = 0;ne<nodes_expanded.size();ne++){
+						nodes_expanded.get(ne)
+						.setHeuristic_cost(secondHeuristic(nodes_expanded.get(ne)
+								,((GottaCatchemAllSearchProblem)searchProblem).getMaze()));
+					}
+					;break;
+				case 3:
+					for(int ne = 0;ne<nodes_expanded.size();ne++){
+						nodes_expanded.get(ne)
+						.setHeuristic_cost(thirdHeuristic(nodes_expanded.get(ne)
+								,((GottaCatchemAllSearchProblem)searchProblem).getMaze()));
+					}
+					;break;
+				}
+				nodes.addAll(nodes_expanded);
+				if(QingFunc.substring(0,2).equals("AS")){
+					nodes = sortDeque(nodes);
+				}else{
+					nodes = sortDequeGreedy(nodes);
+				}
+				;break;
 			}
 		}
 		
+	}
+	
+	private static ArrayDeque<SearchTreeNode> sortDequeGreedy(ArrayDeque<SearchTreeNode> nodes) {
+		
+		ArrayDeque<SearchTreeNode> nodes_temp = nodes.clone();
+		ArrayList<SearchTreeNode> nodes_array = new ArrayList<SearchTreeNode>();
+		for(int nt = 0; nt<nodes.size();nt++){
+			nodes_array.add((SearchTreeNode) nodes_temp.pop());
+		}
+		
+		
+		ArrayList<SearchTreeNode> result = new ArrayList<SearchTreeNode>();
+		
+		for(int i = 0;i<nodes.size();i++){
+			SearchTreeNode sorted_node = nodes_array.get(0);
+			//nodes_array.remove(0);
+			int index = 0;
+			
+			for(int j = 0;j<nodes_array.size();j++){
+				if(sorted_node.getHeuristic_cost()
+				> nodes_array.get(j).getHeuristic_cost()){
+					sorted_node = nodes_array.get(j);
+					index = j;
+				}
+			}
+			result.add(sorted_node);
+			nodes_array.remove(index);
+		}
+		
+		nodes = new ArrayDeque<SearchTreeNode>();
+		for(int i = 0;i<result.size();i++){
+			nodes.add(result.get(i));
+		}
+		return nodes;
 	}
 	public static void main(String[]args){
 		Maze maze = new Maze();
@@ -123,7 +170,7 @@ public class Main {
 				ops);
 		System.out.println(maze.getEgg_hatch());
 
-		SearchTreeNode resultNode = ((SearchTreeNode)SearchAlgorithm(gcasp, "BF"));
+		SearchTreeNode resultNode = ((SearchTreeNode)SearchAlgorithm(gcasp, "AS3"));
 		SearchTreeNode node = resultNode;
 		System.out.println(((PokemonState)node.getState()).getX()+ " | "+((PokemonState)node.getState()).getY()+" D "+((PokemonState)node.getState()).getDirection());
 		while(node.getParent() != null){
@@ -132,6 +179,83 @@ public class Main {
 		}
 		
 		
+	}
+	
+	public static ArrayDeque<SearchTreeNode> sortDeque(ArrayDeque<SearchTreeNode> nodes){
+		ArrayDeque<SearchTreeNode> nodes_temp = nodes.clone();
+		ArrayList<SearchTreeNode> nodes_array = new ArrayList<SearchTreeNode>();
+		for(int nt = 0; nt<nodes.size();nt++){
+			nodes_array.add((SearchTreeNode) nodes_temp.pop());
+		}
+		
+		
+		ArrayList<SearchTreeNode> result = new ArrayList<SearchTreeNode>();
+		
+		for(int i = 0;i<nodes.size();i++){
+			SearchTreeNode sorted_node = nodes_array.get(0);
+			//nodes_array.remove(0);
+			int index = 0;
+			
+			for(int j = 0;j<nodes_array.size();j++){
+				if(sorted_node.getPath_cost_from_root() + sorted_node.getHeuristic_cost()
+				> nodes_array.get(j).getPath_cost_from_root() + nodes_array.get(j).getHeuristic_cost()){
+					sorted_node = nodes_array.get(j);
+					index = j;
+				}
+			}
+			result.add(sorted_node);
+			nodes_array.remove(index);
+		}
+		
+		nodes = new ArrayDeque<SearchTreeNode>();
+		for(int i = 0;i<result.size();i++){
+			nodes.add(result.get(i));
+		}
+		return nodes;
+	}
+	
+	public static int firstHeuristic(SearchTreeNode node, Maze maze){
+		
+		return getDistance(((PokemonState)node.getState()).getX(),
+				((PokemonState)node.getState()).getY(),
+				maze.getEnding_X(),
+				maze.getEnding_Y());
+	}
+	
+	public static int secondHeuristic(SearchTreeNode node, Maze maze){
+
+		int maxDistance = 0;
+		for(int i = 0;i<((PokemonState)node.getState()).getPokemons().size();i++){
+			int dist = getDistance(((PokemonState)node.getState()).getX(),
+					((PokemonState)node.getState()).getY(),
+					((PokemonState)node.getState()).getPokemons().get(i).getX(),
+					((PokemonState)node.getState()).getPokemons().get(i).getY());
+			if(dist > maxDistance)
+				maxDistance = dist;
+		}
+		return maxDistance;
+	}
+	private static int thirdHeuristic(SearchTreeNode node, Maze maze) {
+		
+		int maxDistance = 0;
+		for(int i = 0;i<((PokemonState)node.getState()).getPokemons().size();i++){
+			int dist = getDistance(((PokemonState)node.getState()).getX(),
+					((PokemonState)node.getState()).getY(),
+					((PokemonState)node.getState()).getPokemons().get(i).getX(),
+					((PokemonState)node.getState()).getPokemons().get(i).getY())
+					+ 
+					getDistance(((PokemonState)node.getState()).getPokemons().get(i).getX(),
+					((PokemonState)node.getState()).getPokemons().get(i).getY(),
+					maze.getEnding_X(),
+					maze.getEnding_Y());
+			if(dist > maxDistance)
+				maxDistance = dist;
+		}
+		return maxDistance;
+	}
+	
+	public static int getDistance(int x1, int y1, int x2, int y2){
+		return Math.abs(x1-x2) + Math.abs(y1-y2);
 	}
 	
 }

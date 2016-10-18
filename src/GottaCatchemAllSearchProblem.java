@@ -74,7 +74,7 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 						(((PokemonState)node.getState()).getDirection()+1) % 4,
 						((PokemonState)node.getState()).getPokemons(),
 						((PokemonState)node.getState()).getEgg_hatch());
-				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "R", new_state);
+				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "R", new_state);
 				result.add(new_node.cloneNode());
 				;break;
 			case "L": 
@@ -83,7 +83,7 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 						(((((PokemonState)node.getState()).getDirection()-1) % 4)+4) % 4,
 						((PokemonState)node.getState()).getPokemons(),
 						((PokemonState)node.getState()).getEgg_hatch());
-				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "L", new_state);
+				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "L", new_state);
 				result.add(new_node.cloneNode());
 				;break;
 			case "F": 
@@ -111,7 +111,7 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 							(((PokemonState)node.getState()).getDirection()),
 							pokemons,
 							((PokemonState)node.getState()).getEgg_hatch()-1);
-					new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "F", new_state);
+					new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "F", new_state);
 					result.add(new_node.cloneNode());
 				}
 //				else{

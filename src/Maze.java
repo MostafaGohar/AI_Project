@@ -31,8 +31,8 @@ public class Maze {
 //		if(x<5)x=5;
 //		int y = (int)(Math.random()*25);
 //		if(y<5)y=5;
-		int x = 4;
-		int y = 4;
+		int x = 3;
+		int y = 3;
 		int starting_X_temp =(int)(Math.random()*x);
 		int starting_Y_temp =(int)(Math.random()*y);
 		int ending_X_temp = 0;
