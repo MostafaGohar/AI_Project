@@ -9,7 +9,9 @@ public class Maze {
 	//Maze is an 2D array of integers,
 	//to check if a cell has a North opening, OR it with 1, 2 for South, 4 for East and 8 for South
 	//to check if a cell has a pokemon, OR it with 16
-	private final int[][] maze;
+	private int[][] maze;
+
+
 
 	int starting_X;
 	int starting_Y;
@@ -31,8 +33,8 @@ public class Maze {
 //		if(x<5)x=5;
 //		int y = (int)(Math.random()*25);
 //		if(y<5)y=5;
-		int x = 3;
-		int y = 3;
+		int x = 4;
+		int y = 4;
 		int starting_X_temp =(int)(Math.random()*x);
 		int starting_Y_temp =(int)(Math.random()*y);
 		int ending_X_temp = 0;
@@ -102,7 +104,7 @@ public class Maze {
 		System.out.println("+");
 	}
 	
-	private void print() {
+	public void print() {
 		for(int i = 0;i<x;i++){
 			for(int j = 0;j<y;j++){
 				if(maze[i][j] <= 9)
@@ -113,6 +115,7 @@ public class Maze {
 			System.out.println("");
 		}
 	}
+	
  
 	private void generateMaze(int cx, int cy) {
 		Direction[] dirs = Direction.values();
@@ -187,6 +190,20 @@ public class Maze {
 
 	public void setEnding_Y(int ending_Y) {
 		this.ending_Y = ending_Y;
+	}
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+	public void setPokemons(ArrayList<Pokemon> pokemons) {
+		Pokemons = pokemons;
+	}
+
+	public void setMaze(int[][] maze) {
+		this.maze = maze;
 	}
 	
 	public boolean canMoveForward(int x, int y, int direction){

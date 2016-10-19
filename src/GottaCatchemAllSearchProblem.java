@@ -1,8 +1,11 @@
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public class GottaCatchemAllSearchProblem extends SearchProblem{
 	
 	private Maze maze;
+	private long expanded_nodes;
+	private HashSet<PokemonState> hashStates = new HashSet<PokemonState>();
 	public ArrayList<Integer> xs = new ArrayList<Integer>();
 	
 	public ArrayList<Integer> ys = new ArrayList<Integer>();
@@ -45,6 +48,12 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 	@Override
 	ArrayList<SearchTreeNode> expand(SearchTreeNode node) {
 		
+		ArrayList<SearchTreeNode>result = new ArrayList<SearchTreeNode>();
+
+		
+		setExpanded_nodes(getExpanded_nodes() + 1);
+		
+		
 		//print cells discovered so far
 //		int checkz = 0;
 //		for(int p = 0;p<xs.size();p++){
@@ -61,7 +70,6 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 //			}
 //		}
 		
-		ArrayList<SearchTreeNode>result = new ArrayList<SearchTreeNode>();
 		SearchTreeNode new_node = null;
 		PokemonState new_state = null;
 		
@@ -74,7 +82,11 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 						(((PokemonState)node.getState()).getDirection()+1) % 4,
 						((PokemonState)node.getState()).getPokemons(),
 						((PokemonState)node.getState()).getEgg_hatch());
-				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "R", new_state);
+				if(hashStates.contains(((PokemonState)new_state))){
+					break;
+				}
+				hashStates.add(((PokemonState)new_state));
+				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "R", new_state);
 				result.add(new_node.cloneNode());
 				;break;
 			case "L": 
@@ -83,7 +95,11 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 						(((((PokemonState)node.getState()).getDirection()-1) % 4)+4) % 4,
 						((PokemonState)node.getState()).getPokemons(),
 						((PokemonState)node.getState()).getEgg_hatch());
-				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "L", new_state);
+				if(hashStates.contains(((PokemonState)new_state))){
+					break;
+				}
+				hashStates.add(((PokemonState)new_state));
+				new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "L", new_state);
 				result.add(new_node.cloneNode());
 				;break;
 			case "F": 
@@ -111,16 +127,42 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 							(((PokemonState)node.getState()).getDirection()),
 							pokemons,
 							((PokemonState)node.getState()).getEgg_hatch()-1);
-					new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 1, "F", new_state);
+					if(hashStates.contains(((PokemonState)new_state))){
+						break;
+					}
+					hashStates.add(((PokemonState)new_state));
+					new_node = new SearchTreeNode(node, node.getDepth()+1, node.getPath_cost_from_root() + 2, "F", new_state);
 					result.add(new_node.cloneNode());
 				}
-//				else{
-//					System.out.println("Can't move");
-//				}
+
 						;break;
 			}
 		}
 		return result;
+	}
+
+
+
+	public HashSet<PokemonState> getHashStates() {
+		return hashStates;
+	}
+
+
+
+	public void setHashStates(HashSet<PokemonState> hashStates) {
+		this.hashStates = hashStates;
+	}
+
+
+
+	public long getExpanded_nodes() {
+		return expanded_nodes;
+	}
+
+
+
+	public void setExpanded_nodes(long expanded_nodes) {
+		this.expanded_nodes = expanded_nodes;
 	}
 
 }

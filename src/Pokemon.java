@@ -25,4 +25,12 @@ public class Pokemon {
 	public void setY(int y) {
 		this.y = y;
 	}
+	public boolean equals(Object p){
+		if(this.x == ((Pokemon)p).x && this.y == ((Pokemon)p).y)
+			return true;
+		return false;
+	}
+	public int hashCode(){
+		return 0;
+	}
 }

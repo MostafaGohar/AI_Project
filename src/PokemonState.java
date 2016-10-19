@@ -46,5 +46,19 @@ public class PokemonState {
 	public void setEgg_hatch(int egg_hatch) {
 		this.egg_hatch = egg_hatch;
 	}
+	@Override
+	public boolean equals(Object state){
+		
+		if(this.x == ((PokemonState)state).getX() && this.y == ((PokemonState)state).getY() && this.direction == ((PokemonState)state).getDirection()
+				//&& this.egg_hatch == ((PokemonState)state).getEgg_hatch() 
+				&& this.Pokemons.containsAll(((PokemonState)state).getPokemons())){
+			return true;
+		}
+		return false;	
+	}
+	@Override
+	public int hashCode(){
+		return Pokemons.hashCode();
+	}
 	
 }
