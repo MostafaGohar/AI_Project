@@ -6,16 +6,11 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 	private Maze maze;
 	private long expanded_nodes;
 	private HashSet<PokemonState> hashStates = new HashSet<PokemonState>();
-	public ArrayList<Integer> xs = new ArrayList<Integer>();
-	
-	public ArrayList<Integer> ys = new ArrayList<Integer>();
 
 	public GottaCatchemAllSearchProblem(Maze maze, PokemonState initial_state,String[] operators){
 		this.maze = maze;
 		this.setInitial_state(initial_state);
 		this.setOperators(operators);
-		this.xs.add(maze.getStarting_X());
-		this.ys.add(maze.getStarting_Y());
 	}
 	
 	
@@ -40,35 +35,12 @@ public class GottaCatchemAllSearchProblem extends SearchProblem{
 	}
 
 	@Override
-	int path_cost(SearchTreeNode node) {
-		// TODO Auto-generated method stub
-		return node.getPath_cost_from_root();
-	}
-
-	@Override
 	ArrayList<SearchTreeNode> expand(SearchTreeNode node) {
 		
 		ArrayList<SearchTreeNode>result = new ArrayList<SearchTreeNode>();
 
 		
 		setExpanded_nodes(getExpanded_nodes() + 1);
-		
-		
-		//print cells discovered so far
-//		int checkz = 0;
-//		for(int p = 0;p<xs.size();p++){
-//			if(xs.get(p) == ((PokemonState)node.getState()).getX() && ys.get(p) == ((PokemonState)node.getState()).getY()){
-//				checkz = 1;
-//			}
-//		}
-//		if(checkz == 0){
-//			xs.add(((PokemonState)node.getState()).getX());
-//			ys.add(((PokemonState)node.getState()).getY());
-//			System.out.println("So far: ");
-//			for(int p = 0;p<xs.size();p++){
-//				System.out.print(xs.get(p)+", "+ys.get(p)+" | ");
-//			}
-//		}
 		
 		SearchTreeNode new_node = null;
 		PokemonState new_state = null;

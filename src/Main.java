@@ -330,6 +330,21 @@ public class Main {
 		System.out.println("Expanded nodes = "+result.get(2));
 		System.out.println("Actions performed = "+result.get(1));
 		
+		for(int i = 0;i<maze.getX();i++){
+			for(int j = 0;j<maze.getY();j++){
+				if(!((maze.getMaze()[j][i] & 1) == 0))
+					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(0,X,S).");
+				if(!((maze.getMaze()[j][i] & 4) == 0))
+					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(1,X,S).");
+				if(!((maze.getMaze()[j][i] & 2) == 0))
+					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(2,X,S).");
+				if(!((maze.getMaze()[j][i] & 8) == 0))
+					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(3,X,S).");
+			}
+		}
+		System.out.println("canTurnRight(X,S).");
+		System.out.println("canTurnLeft(X,S).");
+		
 	}
 	
 }
