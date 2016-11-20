@@ -330,21 +330,39 @@ public class Main {
 		System.out.println("Expanded nodes = "+result.get(2));
 		System.out.println("Actions performed = "+result.get(1));
 		
+		System.out.println("%############PROLOG CODE START###########");
+		System.out.println("at("+maze.getStarting_X()+","+maze.getStarting_Y()+",0,[],EH,s):-");
+		System.out.println("\t"+"EH @=< 0.");
 		for(int i = 0;i<maze.getX();i++){
-			for(int j = 0;j<maze.getY();j++){
-				if(!((maze.getMaze()[j][i] & 1) == 0))
-					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(0,X,S).");
-				if(!((maze.getMaze()[j][i] & 4) == 0))
-					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(1,X,S).");
-				if(!((maze.getMaze()[j][i] & 2) == 0))
-					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(2,X,S).");
-				if(!((maze.getMaze()[j][i] & 8) == 0))
-					System.out.println("canMoveForward(X,S):-At("+i+","+j+",S), Direction(3,X,S).");
-			}
+            for(int j = 0;j<maze.getY();j++){
+                if(!((maze.getMaze()[j][i] & 1) == 0))
+                    System.out.println("canMoveForward("+j+","+i+","+(j)+","+(i-1)+",0).");
+                if(!((maze.getMaze()[j][i] & 4) == 0))
+                    System.out.println("canMoveForward("+j+","+i+","+(j+1)+","+(i)+",1).");
+                if(!((maze.getMaze()[j][i] & 2) == 0))
+                    System.out.println("canMoveForward("+j+","+i+","+(j)+","+(i+1)+",2).");
+                if(!((maze.getMaze()[j][i] & 8) == 0))
+                    System.out.println("canMoveForward("+j+","+i+","+(j-1)+","+(i)+",3).");
+            }
+        }
+		String pokemonsForProlog = "";
+		for(int i = 0;i<maze.getPokemons().size();i++){
+			System.out.println("pokemon("+maze.getPokemons().get(i).getX()+","+maze.getPokemons().get(i).getY()+").");
+			pokemonsForProlog+="("+maze.getPokemons().get(i).getX()+","+maze.getPokemons().get(i).getY()+"),";
+			
 		}
-		System.out.println("canTurnRight(X,S).");
-		System.out.println("canTurnLeft(X,S).");
+		if(pokemonsForProlog.length() > 0){
+			pokemonsForProlog = pokemonsForProlog.substring(0,pokemonsForProlog.length()-1);
+		}
 		
+		System.out.println("main(S,Depth):-\n"+
+	"\tcall_with_depth_limit(at("+maze.getEnding_X()+","+maze.getEnding_Y()+",0,["+pokemonsForProlog+"],"+maze.getEgg_hatch()+",S),Depth,R), R \\= depth_limit_exceeded.\n"+
+"main(S,Depth):-\n"+
+	"\tcall_with_depth_limit(at("+maze.getEnding_X()+","+maze.getEnding_Y()+",1,["+pokemonsForProlog+"],"+maze.getEgg_hatch()+",S),Depth,R), R \\= depth_limit_exceeded.\n"+
+"main(S,Depth):-\n"+
+	"\tcall_with_depth_limit(at("+maze.getEnding_X()+","+maze.getEnding_Y()+",2,["+pokemonsForProlog+"],"+maze.getEgg_hatch()+",S),Depth,R), R \\= depth_limit_exceeded.\n"+
+"main(S,Depth):-\n"+
+	"\tcall_with_depth_limit(at("+maze.getEnding_X()+","+maze.getEnding_Y()+",3,["+pokemonsForProlog+"],"+maze.getEgg_hatch()+",S),Depth,R), R \\= depth_limit_exceeded.\n");
 	}
 	
 }
